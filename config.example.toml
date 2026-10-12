@@ -1,0 +1,41 @@
+# petal --config config.toml
+# The NixOS module writes this from services.petal.settings.
+
+# Where petal listens. Put it behind tailscale serve (or another HTTPS proxy) for phones:
+# service workers, push and installing the app all need HTTPS.
+listen = "127.0.0.1:8190"
+
+# The text-to-picture workflows on offer (see README.md for the format).
+catalog = "/etc/petal/catalog.json"
+
+# The database and push keys; defaults to $STATE_DIRECTORY, else ./data.
+# data_dir = "/var/lib/petal"
+# Thumbnails; defaults to $CACHE_DIRECTORY, else <data_dir>/cache.
+# cache_dir = "/var/cache/petal"
+
+# Host headers to accept besides localhost, 127.0.0.1 and *.ts.net.
+# hosts = ["petal.example.org"]
+
+[comfyui]
+url = "http://127.0.0.1:8188"
+# The systemd unit that runs ComfyUI. petal starts it when a picture is asked for (the user
+# petal runs as needs polkit permission for that) and stops it after idle_stop_minutes, but only
+# if petal started it. Leave it out and petal never starts or stops ComfyUI.
+unit = "podman-comfyui.service"
+idle_stop_minutes = 20
+# Units that keep ComfyUI from being stopped while they run.
+busy_units = ["comfyui-models.service"]
+# ComfyUI keeps one websocket per client id; give a second petal its own.
+# client_id = "petal"
+
+[comfyui.outputs]
+# Where ComfyUI's "image/<prefix>" files land on this machine, the gallery's folder.
+image = "/home/me/Pictures/AI"
+
+# Magic (prompt expansion and translation), through an OpenAI-compatible server.
+[llm]
+url = "http://127.0.0.1:8080/v1"
+
+[push]
+# The VAPID subject push services see; defaults to the page's https origin.
+# subject = "https://example.ts.net"
