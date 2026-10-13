@@ -90,6 +90,13 @@ in
             type = lib.types.path;
             description = "The workflow catalog (JSON) petal offers";
           };
+
+          keep_awake_minutes = lib.mkOption {
+            type = lib.types.ints.unsigned;
+            default = 0;
+            example = 15;
+            description = "Keep the machine from sleeping until this many minutes after the app was last used, since an asleep machine is out of the phone's reach. Idle suspends and `systemctl suspend` are refused meanwhile; closing the lid still suspends. 0 leaves sleep alone. Adds a polkit rule that lets petal.service take logind's sleep lock";
+          };
         };
       };
     };
@@ -149,6 +156,20 @@ in
         UMask = "0077";
       };
     };
+
+    # Outside a login session logind asks polkit before granting a sleep lock, and polkit's
+    # default is an admin password. Only petal's own unit gets it, and only while that can't
+    # gain privileges.
+    security.polkit.extraConfig = lib.mkIf (cfg.settings.keep_awake_minutes > 0) ''
+      polkit.addRule(function (action, subject) {
+        if (action.id == "org.freedesktop.login1.inhibit-block-sleep" &&
+            subject.system_unit == "petal.service" &&
+            subject.no_new_privileges &&
+            subject.user == "${cfg.user}") {
+          return polkit.Result.YES;
+        }
+      });
+    '';
 
     # https://<host>.<tailnet>.ts.net, while petal itself stays on 127.0.0.1. Not tied to
     # tailscaled's lifetime: tailscaled keeps the serve config across its own restarts, and a
