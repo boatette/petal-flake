@@ -23,7 +23,7 @@ let
 in
 {
   options.services.petal = {
-    enable = lib.mkEnableOption "petal, a phone UI for ComfyUI's text-to-picture workflows";
+    enable = lib.mkEnableOption "petal, a phone UI for ComfyUI's picture workflows";
 
     package = lib.mkOption {
       type = lib.types.package;
