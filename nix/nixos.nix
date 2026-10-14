@@ -23,7 +23,7 @@ let
 in
 {
   options.services.petal = {
-    enable = lib.mkEnableOption "petal, a phone UI for ComfyUI's text-to-picture workflows";
+    enable = lib.mkEnableOption "petal, a phone UI for ComfyUI's picture workflows";
 
     package = lib.mkOption {
       type = lib.types.package;
@@ -73,6 +73,7 @@ in
             outputs.image = "/home/alice/Pictures/ComfyUI";
           };
           llm.url = "http://127.0.0.1:8080/v1";
+          chat.model = "chat";
         }
       '';
       description = "petal's config.toml; see config.example.toml for every setting";
