@@ -1,11 +1,11 @@
 {
-  "version": "0.2.2",
+  "version": "0.2.3",
   "x86_64-linux": {
-    "url": "https://github.com/boatette/petal-flake/releases/download/v0.2.2/petal-0.2.2-x86_64-linux.tar.gz",
-    "hash": "sha256-Y/P1P6kmyuTcbxLIjxbcgIJ8KAFrcJ1QF9aocQZFdYc="
+    "url": "https://github.com/boatette/petal-flake/releases/download/v0.2.3/petal-0.2.3-x86_64-linux.tar.gz",
+    "hash": "sha256-mELcmWXzG44zXIMp1JZo1MXLBpEmqiOsGtN6HOb0Qbs="
   },
   "aarch64-linux": {
-    "url": "https://github.com/boatette/petal-flake/releases/download/v0.2.2/petal-0.2.2-aarch64-linux.tar.gz",
-    "hash": "sha256-2hi/oGZ1sV/HiguPKRCV7S5+geubuODlSL5itTwde2w="
+    "url": "https://github.com/boatette/petal-flake/releases/download/v0.2.3/petal-0.2.3-aarch64-linux.tar.gz",
+    "hash": "sha256-gvOxDx32S0r8eILRyPWhajYeeEv/nQQ7yfp36T6aoiU="
   }
 }

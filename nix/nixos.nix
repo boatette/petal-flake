@@ -73,6 +73,7 @@ in
             outputs.image = "/home/alice/Pictures/ComfyUI";
           };
           llm.url = "http://127.0.0.1:8080/v1";
+          chat.model = "chat";
         }
       '';
       description = "petal's config.toml; see config.example.toml for every setting";
