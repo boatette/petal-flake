@@ -18,6 +18,10 @@ let
   # watches them for new ones.
   outputs = lib.attrValues (cfg.settings.comfyui.outputs or { });
   writable = [ cfg.dataDir ] ++ outputs;
+  # ComfyUI's input folder, whose pictures the gallery shows as imported: only read. Quoted, as
+  # a path with a space would otherwise be two, and with "-" so that petal starts without it.
+  input = cfg.settings.comfyui.input or null;
+  readable = lib.optional (input != null) ''"-${input}"'';
 
   tailscale = lib.getExe config.services.tailscale.package;
 in
@@ -71,6 +75,7 @@ in
             unit = "comfyui.service";
             idle_stop_minutes = 20;
             outputs.image = "/home/alice/Pictures/ComfyUI";
+            input = "/home/alice/Pictures/ComfyUI uploads";
           };
           llm.url = "http://127.0.0.1:8080/v1";
           chat.model = "chat";
@@ -139,10 +144,11 @@ in
         RestartSec = 5;
 
         # Nothing but its own data and the gallery's folders is writable, and of home only
-        # those are visible at all.
+        # those (and ComfyUI's input folder) are visible at all.
         ProtectSystem = "strict";
         ProtectHome = "tmpfs";
         BindPaths = writable;
+        BindReadOnlyPaths = readable;
         PrivateTmp = true;
         PrivateDevices = true;
         NoNewPrivileges = true;
