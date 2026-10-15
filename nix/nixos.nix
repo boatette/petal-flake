@@ -104,6 +104,17 @@ in
   };
 
   config = lib.mkIf cfg.enable {
+    assertions = [
+      {
+        assertion = outputs != [ ];
+        message = "services.petal.settings.comfyui.outputs.image has to be set: the folder ComfyUI saves pictures in, which is petal's gallery";
+      }
+      {
+        assertion = cfg.tailscale.enable -> config.services.tailscale.enable;
+        message = "services.petal.tailscale.enable serves petal with tailscale serve, which needs services.tailscale.enable";
+      }
+    ];
+
     systemd.tmpfiles.rules = [
       "d ${cfg.dataDir} 0700 ${cfg.user} ${cfg.group} -"
     ]
