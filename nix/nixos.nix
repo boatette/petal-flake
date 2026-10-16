@@ -130,8 +130,11 @@ in
       documentation = [ "https://github.com/boatette/petal-flake" ];
       after = [ "network.target" ];
       wantedBy = [ "multi-user.target" ];
-      # To start and stop ComfyUI's unit.
-      path = [ config.systemd.package ];
+      # To start and stop ComfyUI's unit, and to read clips and take their poster frames.
+      path = [
+        config.systemd.package
+        pkgs.ffmpeg-headless
+      ];
 
       serviceConfig = {
         ExecStart = "${lib.getExe cfg.package} --config ${configFile}";
